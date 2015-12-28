@@ -3,7 +3,7 @@
  * SiteConfig Service Provider
  */
 
-namespace Delatbabel\Applog;
+namespace Delatbabel\SiteConfig;
 
 use Delatbabel\Applog\Models\Applog;
 use Delatbabel\Applog\Helpers\ApplogHelper;
