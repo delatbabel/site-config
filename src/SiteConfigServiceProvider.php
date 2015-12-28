@@ -5,11 +5,8 @@
 
 namespace Delatbabel\SiteConfig;
 
-use Delatbabel\Applog\Models\Applog;
-use Delatbabel\Applog\Helpers\ApplogHelper;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Log;
 
 /**
  * SiteConfig Service Provider
