@@ -32,8 +32,34 @@ Once that is done, run the composer update command:
 After composer update completes, add this line to your config/app.php file in the 'providers' array:
 
 ```
-Delatbabel\SiteConfig\SiteConfigServiceProvider::class,
+    Delatbabel\SiteConfig\SiteConfigServiceProvider::class,
 ```
+
+### Boostrap the Config Loader
+
+Modify each of app/Console/Kernel.php and app/Http/Kernel.php to include the following bootstrappers function:
+
+```php
+protected function bootstrappers()
+{
+    $bootstrappers = parent::bootstrappers();
+
+    // Swap out the default Laravel LoadConfiguration class with our own.
+    foreach ($bootstrappers as $key => $value) {
+        if ($value == 'Illuminate\Foundation\Bootstrap\LoadConfiguration') {
+            $bootstrappers[$key] = 'Delatbabel\SiteConfig\Bootstrap\LoadConfiguration';
+        }
+    }
+
+    return $bootstrappers;
+}
+```
+
+Note that Delatbabel\SiteConfig\Bootstrap\LoadConfiguration replaces the original
+line Illuminate\Foundation\Bootstrap\LoadConfiguration.  You may of course
+already have a bootstrappers function in your Kernel.php files with other
+bootstrappers replaced, in which case you just need to modify it to include
+the updated LoadConfiguration bootstrapper code.
 
 ### Incorporate and Run the Migrations
 

@@ -57,12 +57,9 @@ class LoadConfiguration extends BaseLoadConfiguration
         // Fetch the configuration that was just loaded.
         $config = config();
 
-        // Bootstrap the Repository class
-        $siteRepository = new SiteConfigRepository();
-
         // Load the current configuration from the database and add it in to
         // the configuration loaded from files.
-        $this->loadConfigurationDatabase($app, $config, $siteRepository);
+        $this->loadConfigurationDatabase($app, $config);
     }
 
     /**
@@ -70,11 +67,14 @@ class LoadConfiguration extends BaseLoadConfiguration
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Config\Repository  $repository
-     * @param  SiteConfigRepository $siteConfigRepository
      * @return void
      */
-    protected function loadConfigurationDatabase(Application $app, RepositoryContract $repository, SiteConfigRepository $siteConfigRepository)
+    protected function loadConfigurationDatabase(Application $app, RepositoryContract $repository)
     {
+        // Bootstrap the Repository class
+        $siteConfigRepository = new SiteConfigRepository();
+
+        // Load the configuration into the current running config.
         foreach ($siteConfigRepository->loadConfiguration() as $group => $groupConfig) {
             $repository->set($group, $groupConfig);
         }
