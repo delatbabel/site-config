@@ -70,12 +70,12 @@ class LoadConfiguration extends BaseLoadConfiguration
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Config\Repository  $repository
+     * @param  SiteConfigRepository $siteConfigRepository
      * @return void
      */
     protected function loadConfigurationDatabase(Application $app, RepositoryContract $repository, SiteConfigRepository $siteConfigRepository)
     {
-        foreach ($siteConfigRepository->fetchAllGroups() as $group) {
-            $groupConfig = ConfigModel::fetchSettings($environment, $website_id, $group);
+        foreach ($siteConfigRepository->loadConfiguration() as $group => $groupConfig) {
             $repository->set($group, $groupConfig);
         }
     }
