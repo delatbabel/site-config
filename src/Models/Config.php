@@ -6,7 +6,7 @@ namespace Delatbabel\SiteConfig\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Log;
+// use Log;
 
 /**
  * Class Config
@@ -128,8 +128,10 @@ class Config extends Model
             ELSE 4
         END'));
 
+        /*
         Log::debug(__CLASS__ . ':' . __TRAIT__ . ':' . __FILE__ . ':' . __LINE__ . ':' . __FUNCTION__ . ':' .
             'Config SQL query: ' . $model->toSql());
+        */
 
         // The above query will produce a query where the most relevant results
         // happen before the least relevant results.  So now we have to create a
