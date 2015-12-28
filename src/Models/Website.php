@@ -2,7 +2,7 @@
 /**
  * Website model
  */
-namespace Delatbabel\SiteWebsite\Models;
+namespace Delatbabel\SiteConfig\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
