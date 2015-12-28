@@ -86,7 +86,7 @@ class Website extends Model
             // Have to do this using a raw query because Laravel doesn't INSTR.
             /** @var Website $result */
             $result = static::whereRaw("INSTR('" . $BASE_URL . "', `http_host`) > 0")
-                ->orderBy(DB::raw('LENGTH(`http_host`) DESC'))
+                ->orderBy(DB::raw('LENGTH(`http_host`)'), 'desc')
                 ->first();
             if (empty($result)) {
                 $current_data = null;
