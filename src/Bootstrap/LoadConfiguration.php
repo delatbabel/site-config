@@ -6,7 +6,6 @@
  */
 namespace Delatbabel\SiteConfig\Bootstrap;
 
-use Illuminate\Foundation\Bootstrap\LoadConfiguration as BaseLoadConfiguration;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
 use Delatbabel\SiteConfig\Repository\SiteConfigRepository;
@@ -14,7 +13,7 @@ use Delatbabel\SiteConfig\Repository\SiteConfigRepository;
 /**
  * Load Configuration Class
  *
- * Provides an alternative to the standard laravel configuration load boostrapper.
+ * Provides an addition to the standard laravel configuration load boostrapper.
  *
  * You will need to make the following changes:
  *
@@ -25,12 +24,9 @@ use Delatbabel\SiteConfig\Repository\SiteConfigRepository;
  * protected function bootstrappers()
  * {
  *     $bootstrappers = parent::bootstrappers();
- *     // Swap out the default Laravel LoadConfiguration class with our own.
- *     foreach ($bootstrappers as $key => $value) {
- *         if ($value == 'Illuminate\Foundation\Bootstrap\LoadConfiguration') {
- *             $bootstrappers[$key] = 'Delatbabel\SiteConfig\Bootstrap\LoadConfiguration';
- *         }
- *     }
+ *
+ *     // Add the SiteConfig bootstrapper to the end.
+ *     $bootstrappers[] = 'Delatbabel\SiteConfig\Bootstrap\LoadConfiguration';
  *     return $bootstrappers;
  * }
  * </code>
@@ -41,7 +37,7 @@ use Delatbabel\SiteConfig\Repository\SiteConfigRepository;
  * bootstrappers replaced, in which case you just need to modify it to include
  * the updated LoadConfiguration bootstrapper code.
  */
-class LoadConfiguration extends BaseLoadConfiguration
+class LoadConfiguration
 {
     /**
      * Bootstrap the given application.
@@ -51,25 +47,21 @@ class LoadConfiguration extends BaseLoadConfiguration
      */
     public function bootstrap(Application $app)
     {
-        // Call the parent bootstrapper to load the base configuration files.
-        parent::bootstrap($app);
-
-        // Fetch the configuration that was just loaded.
+        // Fetch the configuration that has already been loaded.
         $config = config();
 
         // Load the current configuration from the database and add it in to
         // the configuration loaded from files.
-        $this->loadConfigurationDatabase($app, $config);
+        $this->loadConfigurationDatabase($config);
     }
 
     /**
      * Load the configuration items from the database.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Config\Repository  $repository
      * @return void
      */
-    protected function loadConfigurationDatabase(Application $app, RepositoryContract $repository)
+    protected function loadConfigurationDatabase(RepositoryContract $repository)
     {
         // Bootstrap the Repository class
         $siteConfigRepository = new SiteConfigRepository();
