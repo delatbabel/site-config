@@ -58,17 +58,17 @@ class LoadConfiguration
     /**
      * Load the configuration items from the database.
      *
-     * @param  \Illuminate\Contracts\Config\Repository  $repository
+     * @param  \Illuminate\Contracts\Config\Repository  $config
      * @return void
      */
-    protected function loadConfigurationDatabase(RepositoryContract $repository)
+    protected function loadConfigurationDatabase(RepositoryContract $config)
     {
         // Bootstrap the Repository class
         $siteConfigRepository = new SiteConfigRepository();
 
         // Load the configuration into the current running config.
         foreach ($siteConfigRepository->loadConfiguration() as $group => $groupConfig) {
-            $repository->set($group, $groupConfig);
+            $config->set($group, $groupConfig);
         }
     }
 }
