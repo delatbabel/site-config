@@ -6,8 +6,10 @@ A database backed config loader for Laravel with per-site configuration.
 
 ## Features
 
-* Adds a a websites table to store configuration data for your websites that
-  may change on a per-whitelabel basis.
+* Adds a websites table to store data for your websites that
+  may change on a per-website basis.
+* Adds a configs table that stores configuration data for your system that may
+  change dynamically, or on a per-website or per-environment basis.
 
 ## Installation
 

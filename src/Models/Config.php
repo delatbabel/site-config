@@ -127,6 +127,23 @@ class Config extends Model
     }
 
     /**
+     * Return an array of all groups.
+     *
+     * @return array
+     */
+    public static function fetchAllGroups()
+    {
+        $model = new self;
+
+        $result = array();
+        foreach ($model->select('group')->distinct()->get() as $row) {
+            $result[] = $row->group;
+        }
+
+        return $result;
+    }
+
+    /**
      * Store a group of settings into the database.
      *
      * TODO: Website
