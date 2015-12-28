@@ -28,6 +28,7 @@ class CreateWebsitesTable extends Migration
             $table->string('created_by', 255)->nullable();
             $table->string('updated_by', 255)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

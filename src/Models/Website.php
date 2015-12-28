@@ -7,6 +7,7 @@ namespace Delatbabel\SiteConfig\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Website
@@ -22,7 +23,11 @@ use Illuminate\Support\Facades\Cache;
  */
 class Website extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['name', 'http_host', 'environment'];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * 1:Many relationship with Config model
@@ -43,8 +48,8 @@ class Website extends Model
      * @return	string
      */
     public static function currentServerName() {
-        if (! empty($_SERVER['BASE_URL'])) {
-            $BASE_URL = $_SERVER['BASE_URL'];
+        if (! empty(env('SERVER_NAME'))) {
+            $BASE_URL = env('SERVER_NAME');
         } elseif (! empty($_SERVER['SERVER_NAME'])) {
             $BASE_URL = $_SERVER['SERVER_NAME'];
         } elseif (! empty($_SERVER['HTTP_HOST'])) {
@@ -78,12 +83,13 @@ class Website extends Model
         if (empty($current_id)) {
 
             // Have to do this using a raw query because Laravel doesn't INSTR.
-            $results = DB::query('SELECT `id` FROM `websites` ' .
-                "WHERE INSTR('" . $BASE_URL . "', `http_host`) > 0 AND status='active' ORDER BY LENGTH(`http_host`) DESC");
-            if (empty($results)) {
+            $result = static::whereRaw("INSTR('" . $BASE_URL . "', `http_host`) > 0")
+                ->orderBy(DB::raw('LENGTH(`http_host`) DESC'))
+                ->first();
+            if (empty($result)) {
                 $current_id = null;
             } else {
-                $current_id = $results[0]->id;
+                $current_id = $result->id;
             }
 
             Cache::put('website-id.' . $BASE_URL, $current_id, 60);
