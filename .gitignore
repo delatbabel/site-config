@@ -1,4 +1,7 @@
-/bootstrap/compiled.php
-.env.*.php
-.env.php
-.env
+.directory
+.idea/
+vendor/
+dirlist.app
+dirlist.cache
+dirlist.vendor
+documents/main/
