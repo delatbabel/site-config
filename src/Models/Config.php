@@ -7,6 +7,7 @@ namespace Delatbabel\SiteConfig\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
+use Log;
 
 /**
  * Class Config
@@ -85,45 +86,77 @@ class Config extends Model
      * prod    test   fruit  5, fruit, orange // host=test takes precedence
      * </code>
      *
-     * TODO: Website.
-     *
      * @param string $environment
      * @param string $group
-     * @return Collection
+     * @return array
      */
     public static function fetchSettings($environment=null, $website_id=null, $group='config')
     {
-        /*
-        $model = self::WhereIn('id', function ($q) use ($environment) {
-            $q->select(DB::raw('COALESCE(MIN(CASE WHEN environment = "' . $environment . '" THEN id END), MIN(id))'))
-                ->from((new self)->getTable())
-                ->groupBy('key');
-        });
-        */
+        $model = static::where('group', '=', $group);
 
-        $model = new self;
-        $model->where('group', '=', $group);
-        if (empty($environment)) {
-            $model->whereNull('environment');
-        } else {
-            $model->where('environment', '=', $environment)
-                ->orWhereNull('environment');
-        }
-        if (empty($website_id)) {
-            $model->whereNull('website_id');
-        } else {
-            $model->where('website_id', '=', $website_id)
-                ->orWhereNull('website_id');
-        }
+        // Environment can be null, or must match or use the null wildcard.
+        $model->where(function ($query) use ($environment) {
+            if (empty($environment)) {
+                $query->whereNull('environment');
+            } else {
+                $query->where('environment', '=', $environment)
+                    ->orWhereNull('environment');
+            }
+        });
+
+        // Website can be null, or must match or use the null wildcard.
+        $model->where(function ($query) use ($website_id) {
+            if (empty($website_id)) {
+                $query->whereNull('website_id');
+            } else {
+                $query->where('website_id', '=', $website_id)
+                    ->orWhereNull('website_id');
+            }
+        });
+
+        // Order by relevance.
         $model->orderBy(DB::raw('CASE
             WHEN website_id IS NOT NULL AND environment IS NOT NULL THEN 1
             WHEN website_id IS NOT NULL THEN 2
             WHEN environment IS NOT NULL THEN 3
             ELSE 4
         END'));
-        $model->groupBy('key');
 
-        return $model->get();
+        Log::debug(__CLASS__ . ':' . __TRAIT__ . ':' . __FILE__ . ':' . __LINE__ . ':' . __FUNCTION__ . ':' .
+            'Config SQL query: ' . $model->toSql());
+
+        // The above query will produce a query where the most relevant results
+        // happen before the least relevant results.  So now we have to create a
+        // key->value list picking only the most relevant results.
+        $result = array();
+        foreach ($model->get() as $item) {
+            if (empty($result[$item->key])) {
+                switch (strtolower($item->type)) {
+                    case 'string':
+                        $result[$item->key] = (string)$item->value;
+                        break;
+                    case 'integer':
+                        $result[$item->key] = (integer)$item->value;
+                        break;
+                    case 'double':
+                        $result[$item->key] = (double)$item->value;
+                        break;
+                    case 'boolean':
+                        $result[$item->key] = (boolean)$item->value;
+                        break;
+                    case 'array':
+                        $result[$item->key] = unserialize($item->value);
+                        break;
+                    case 'null':
+                        $result[$item->key] = null;
+                        break;
+                    default:
+                        $result[$item->key] = $item->value;
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -146,8 +179,6 @@ class Config extends Model
     /**
      * Store a group of settings into the database.
      *
-     * TODO: Website
-     *
      * @param mixed $value
      * @param string $group
      * @param string $key
@@ -155,7 +186,7 @@ class Config extends Model
      * @param string $type   "array"|null
      * @return Config
      */
-    public static function set($value, $group, $key, $environment=null, $type=null)
+    public static function set($value, $group, $key, $environment=null, $website_id=null, $type=null)
     {
         //Lets check if we are doing special array handling
         $arrayHandling = false;
@@ -171,11 +202,21 @@ class Config extends Model
         // First let's try to fetch the model, if it exists then we need to do an
         // Update not an insert
         $model = static::where('key', '=', $key)->where('group', '=', $group);
+
+        // Environment can be null or must match.
         if (empty($environment)) {
             $model->whereNull('environment');
         } else {
             $model->where('environment', '=', $environment);
         }
+
+        // Website can be null or must match.
+        if (empty($website_id)) {
+            $model->whereNull('website_id');
+        } else {
+            $model->where('website_id', '=', $website_id);
+        }
+
         $model = $model->first();
 
         if (empty($model)) {
