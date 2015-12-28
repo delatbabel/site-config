@@ -61,6 +61,46 @@ class Website extends Model
     }
 
     /**
+     * Determine the current website data.
+     *
+     * Returns null if the web site is not found in the websites table.
+     *
+     * @return	array
+     */
+    public static function currentWebsiteData() {
+
+        static $current_data;
+        $BASE_URL = static::currentServerName();
+        $cache_key = 'website-data.' . $BASE_URL;
+
+        // Get the current ID from the cache if it is present.
+        if (empty($current_data)) {
+            if (Cache::has($cache_key)) {
+                return Cache::get($cache_key);
+            }
+        }
+
+        // If the cache doesn't have it then get it from the database.
+        if (empty($current_data)) {
+
+            // Have to do this using a raw query because Laravel doesn't INSTR.
+            /** @var Website $result */
+            $result = static::whereRaw("INSTR('" . $BASE_URL . "', `http_host`) > 0")
+                ->orderBy(DB::raw('LENGTH(`http_host`) DESC'))
+                ->first();
+            if (empty($result)) {
+                $current_data = null;
+            } else {
+                $current_data = $result->toArray();
+            }
+
+            Cache::put($cache_key, $current_data, 60);
+        }
+
+        return $current_data;
+    }
+
+    /**
      * Determine the current website ID.
      *
      * Returns null if the web site is not found in the websites table.
@@ -69,32 +109,10 @@ class Website extends Model
      */
     public static function currentWebsiteId() {
 
-        static $current_id;
-
-        // Get the current ID from the cache if it is present.
-        if (empty($current_id)) {
-            $BASE_URL = static::currentServerName();
-            if (Cache::has('website-id.' . $BASE_URL)) {
-                $current_id = Cache::get('website-id.' . $BASE_URL);
-            }
+        $data = static::currentWebsiteData();
+        if (empty($data)) {
+            return null;
         }
-
-        // If the cache doesn't have it then get it from the database.
-        if (empty($current_id)) {
-
-            // Have to do this using a raw query because Laravel doesn't INSTR.
-            $result = static::whereRaw("INSTR('" . $BASE_URL . "', `http_host`) > 0")
-                ->orderBy(DB::raw('LENGTH(`http_host`) DESC'))
-                ->first();
-            if (empty($result)) {
-                $current_id = null;
-            } else {
-                $current_id = $result->id;
-            }
-
-            Cache::put('website-id.' . $BASE_URL, $current_id, 60);
-        }
-
-        return $current_id;
+        return $data['id'];
     }
 }

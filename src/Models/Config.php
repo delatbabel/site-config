@@ -6,7 +6,6 @@ namespace Delatbabel\SiteConfig\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Collection;
 use Log;
 
 /**
@@ -86,7 +85,14 @@ class Config extends Model
      * prod    test   fruit  5, fruit, orange // host=test takes precedence
      * </code>
      *
+     * The data that this funciton returns is actually a set of key => value
+     * pairs for the configuration found within group $group.
+     *
+     * To get the full configuration you need to call this function for each
+     * group returned by fetchAllGroups().
+     *
      * @param string $environment
+     * @param integer $website_id
      * @param string $group
      * @return array
      */
@@ -183,6 +189,7 @@ class Config extends Model
      * @param string $group
      * @param string $key
      * @param string $environment
+     * @param integer $website_id
      * @param string $type   "array"|null
      * @return Config
      */

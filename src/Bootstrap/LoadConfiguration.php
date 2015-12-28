@@ -8,6 +8,8 @@ namespace Delatbabel\SiteConfig\Bootstrap;
 
 use Illuminate\Foundation\Bootstrap\LoadConfiguration as BaseLoadConfiguration;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Config\Repository as RepositoryContract;
+use Delatbabel\SiteConfig\Repository\SiteConfigRepository;
 
 /**
  * Load Configuration Class
@@ -55,10 +57,26 @@ class LoadConfiguration extends BaseLoadConfiguration
         // Fetch the configuration that was just loaded.
         $config = config();
 
-        // Fetch the current application environment.
-        $environment = $app->environment();
+        // Bootstrap the Repository class
+        $siteRepository = new SiteConfigRepository();
 
         // Load the current configuration from the database and add it in to
         // the configuration loaded from files.
+        $this->loadConfigurationDatabase($app, $config, $siteRepository);
+    }
+
+    /**
+     * Load the configuration items from the database.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Config\Repository  $repository
+     * @return void
+     */
+    protected function loadConfigurationDatabase(Application $app, RepositoryContract $repository, SiteConfigRepository $siteConfigRepository)
+    {
+        foreach ($siteConfigRepository->fetchAllGroups() as $group) {
+            $groupConfig = ConfigModel::fetchSettings($environment, $website_id, $group);
+            $repository->set($group, $groupConfig);
+        }
     }
 }
