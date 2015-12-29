@@ -6,7 +6,6 @@
 namespace Delatbabel\SiteConfig\Repository;
 
 use Delatbabel\SiteConfig\Models\Config as ConfigModel;
-use Delatbabel\SiteConfig\Models\Website as WebsiteModel;
 
 /**
  * Class ConfigSaverRepository

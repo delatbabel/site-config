@@ -91,7 +91,9 @@ class ConfigLoaderRepository
      */
     public function forgetConfig()
     {
-        Cache::forget($this->getCacheKey());
+        /** @var ConfigLoaderRepository $repository */
+        $repository = $this->loadEnvironment();
+        Cache::forget($repository->getCacheKey());
     }
 
     /**
