@@ -84,8 +84,6 @@ php artisan migrate
 
 # TODO
 
-* Flush the configuration cache when the database is updated, forcing the data to be
-  re-read on the next page load.
 * More testing, bug fixing.  I have tried to create a test suite using orchestra/testbench
   but it does not appear to work.
 * Better methods and a facade for saving the configuration to the database.
