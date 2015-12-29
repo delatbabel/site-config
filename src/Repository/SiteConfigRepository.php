@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Cache;
  */
 class SiteConfigRepository
 {
-
     /** @var  string */
     protected $environment;
 
