@@ -2,7 +2,9 @@
 
 A database backed config loader for Laravel with per-site configuration.
 
-**THIS IS IN EARLY DEVELOPMENT STAGE, USE AT YOUR OWN RISK**
+**THIS IS IN EARLY DEVELOPMENT STAGE, USE AT YOUR OWN RISK** -- most functions are now
+working and tested, although the phpUnit test cases won't run in the module.  I have some
+codeception tests embedded in a sample application, yet to be published.
 
 ## Features
 
