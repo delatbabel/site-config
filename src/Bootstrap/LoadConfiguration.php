@@ -7,8 +7,8 @@
 namespace Delatbabel\SiteConfig\Bootstrap;
 
 use Illuminate\Contracts\Foundation\Application;
+use Delatbabel\SiteConfig\Repository\ConfigLoaderRepository;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
-use Delatbabel\SiteConfig\Repository\SiteConfigRepository;
 
 /**
  * Load Configuration Class
@@ -58,17 +58,15 @@ class LoadConfiguration
     /**
      * Load the configuration items from the database.
      *
-     * @param  \Illuminate\Contracts\Config\Repository  $config
+     * @param  RepositoryContract  $config
      * @return void
      */
     protected function loadConfigurationDatabase(RepositoryContract $config)
     {
         // Bootstrap the Repository class
-        $siteConfigRepository = new SiteConfigRepository();
+        $siteConfigRepository = new ConfigLoaderRepository();
 
         // Load the configuration into the current running config.
-        foreach ($siteConfigRepository->loadConfiguration() as $group => $groupConfig) {
-            $config->set($group, $groupConfig);
-        }
+        $siteConfigRepository->setRunningConfiguration($config);
     }
 }

@@ -17,7 +17,7 @@ A database backed config loader for Laravel with per-site configuration.
 ```php
     // Access all configuration variables including Laravel + database stored configuration
     $config = config()->all();
-    
+
     // Fetch a config variable by path
     $my_fruit = config('config.fruit');
 ```
@@ -136,10 +136,15 @@ array so that it ran only after the database was available.
 
 ## Repository
 
-The Repository class, SiteConfigRepository, contains enough information to be able to load the
+The Repository class, ConfigLoaderRepository, contains enough information to be able to load the
 **current** configuration from the database, including knowing about the current website and
 environment.  The detecton of the environment and website, as well as the actual machinery of
 loading configuration for a generic website and environment, is left to the Model classes.
+The ConfigLoaderRepository class also handles all of the caching.
+
+The ConfigSaverRepository class contains enough information to know which configuration values
+to store when saving configuration data to the database, and to reload it after it has been
+saved.
 
 This provides a distinction between the business logic (deciding on what is to be done, and asking
 for it to be done) from the database model (loading or saving the data without making logic

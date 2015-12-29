@@ -39,18 +39,6 @@ class Config extends Model
     }
 
     /**
-     * Determine if a configuration value exists or not.
-     *
-     * @param string $group
-     * @param null $package
-     * @return bool
-     */
-    public static function exists($group, $package = null)
-    {
-        return ! self::fetchSettings(null, $package, $group)->isEmpty();
-    }
-
-    /**
      * Return the configuration data for a specific environment & group.
      *
      * What this function tries to achieve is to return the configuration
@@ -188,15 +176,15 @@ class Config extends Model
     /**
      * Store a group of settings into the database.
      *
+     * @param string $key
      * @param mixed $value
      * @param string $group
-     * @param string $key
      * @param string $environment
      * @param integer $website_id
      * @param string $type   "array"|null
      * @return Config
      */
-    public static function set($value, $group, $key, $environment = null, $website_id = null, $type = null)
+    public static function set($key, $value, $group='config', $environment = null, $website_id = null, $type = null)
     {
         //Lets check if we are doing special array handling
         $arrayHandling = false;
