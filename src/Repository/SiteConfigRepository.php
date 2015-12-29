@@ -65,7 +65,7 @@ class SiteConfigRepository
         // Fetch the current web site data and check to see if it has an
         // alternative environment.
         $website_data = WebsiteModel::currentWebsiteData();
-        if (! empty ($website_data)) {
+        if (! empty($website_data)) {
             if (! empty($website_data['environment'])) {
                 $this->environment = $website_data['environment'];
             }

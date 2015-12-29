@@ -47,7 +47,8 @@ class Website extends Model
      *
      * @return	string
      */
-    public static function currentServerName() {
+    public static function currentServerName()
+    {
         if (! empty(env('SERVER_NAME'))) {
             $BASE_URL = env('SERVER_NAME');
         } elseif (! empty($_SERVER['SERVER_NAME'])) {
@@ -67,8 +68,8 @@ class Website extends Model
      *
      * @return	array
      */
-    public static function currentWebsiteData() {
-
+    public static function currentWebsiteData()
+    {
         static $current_data;
         $BASE_URL = static::currentServerName();
         $cache_key = 'website-data.' . $BASE_URL;
@@ -107,8 +108,8 @@ class Website extends Model
      *
      * @return	integer
      */
-    public static function currentWebsiteId() {
-
+    public static function currentWebsiteId()
+    {
         $data = static::currentWebsiteData();
         if (empty($data)) {
             return null;

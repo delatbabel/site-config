@@ -6,6 +6,7 @@ namespace Delatbabel\SiteConfig\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+
 // use Log;
 
 /**
@@ -96,7 +97,7 @@ class Config extends Model
      * @param string $group
      * @return array
      */
-    public static function fetchSettings($environment=null, $website_id=null, $group='config')
+    public static function fetchSettings($environment = null, $website_id = null, $group = 'config')
     {
         $model = static::where('group', '=', $group);
 
@@ -195,7 +196,7 @@ class Config extends Model
      * @param string $type   "array"|null
      * @return Config
      */
-    public static function set($value, $group, $key, $environment=null, $website_id=null, $type=null)
+    public static function set($value, $group, $key, $environment = null, $website_id = null, $type = null)
     {
         //Lets check if we are doing special array handling
         $arrayHandling = false;
