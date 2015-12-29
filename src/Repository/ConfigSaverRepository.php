@@ -21,6 +21,22 @@ class ConfigSaverRepository
     /**
      * Set a given configuration value and store it in the database.
      *
+     * ### Examples
+     *
+     * Save a single default parameter with group.key
+     *
+     * <code>
+     * $saver = new ConfigSaverRepository();
+     * $saver->set('config.bird', 'eagle-changed-changed');
+     * </code>
+     *
+     * If you omit the group, then "config" is assumed as the default.
+     *
+     * <code>
+     * $saver = new ConfigSaverRepository();
+     * $saver->set('bird', 'eagle-changed-changed');
+     * </code>
+     *
      * @param  string      $key
      * @param  mixed       $value
      * @param  null|string $environment
@@ -38,7 +54,6 @@ class ConfigSaverRepository
         // Any time a . is present in the key we are going to assume the first section
         // is the group.  If there is no group present then we assume that the group
         // is "config".
-
         $explodedOnGroup = explode('.', $key);
         if (count($explodedOnGroup) > 1) {
             $group = array_shift($explodedOnGroup);
@@ -48,8 +63,17 @@ class ConfigSaverRepository
             $item  = $key;
         }
 
+        // What type is the value we are setting?
+        if (is_array($value)) {
+            $type = 'array';
+        } elseif (is_int($value)) {
+            $type = 'integer';
+        } else {
+            $type = 'string';
+        }
+
         // Now we have the group / item as separate values, we can store these
-        ConfigModel::set($item, $value, $group, $environment, $website_id);
+        ConfigModel::set($item, $value, $group, $environment, $website_id, $type);
 
         // Flush the cache
         $siteConfigRepository->forgetConfig();

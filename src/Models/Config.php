@@ -181,10 +181,10 @@ class Config extends Model
      * @param string $group
      * @param string $environment
      * @param integer $website_id
-     * @param string $type   "array"|null
+     * @param string $type   "array"|"string"|"integer"
      * @return Config
      */
-    public static function set($key, $value, $group='config', $environment = null, $website_id = null, $type = null)
+    public static function set($key, $value, $group='config', $environment = null, $website_id = null, $type = 'string')
     {
         //Lets check if we are doing special array handling
         $arrayHandling = false;
@@ -220,7 +220,8 @@ class Config extends Model
         if (empty($model)) {
 
             //Check if we need to do special array handling
-            if ($arrayHandling) { // we are setting a subset of an array
+            if ($arrayHandling) {
+                // we are setting a subset of an array
                 $array = array();
                 self::buildArrayPath($keyExploded, $value, $array);
                 $value = serialize($array);
@@ -238,7 +239,8 @@ class Config extends Model
         } else {
 
             //Check if we need to do special array handling
-            if ($arrayHandling) { // we are setting a subset of an array
+            if ($arrayHandling) {
+                // we are setting a subset of an array
                 $array = array();
                 self::buildArrayPath($keyExploded, $value, $array);
 
