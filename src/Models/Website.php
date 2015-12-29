@@ -17,9 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * ### Example
  *
  * <code>
- * // Example code goes here
+ * $data = Website::currentWebsiteData();
  * </code>
- *
  */
 class Website extends Model
 {

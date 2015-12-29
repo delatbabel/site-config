@@ -19,10 +19,6 @@ use Illuminate\Support\Facades\DB;
  * <code>
  * // Example code goes here
  * </code>
- *
- * ### TODO
- *
- * * Doesn't yet do anything about websites.
  */
 class Config extends Model
 {

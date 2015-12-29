@@ -21,6 +21,20 @@ use Illuminate\Support\ServiceProvider;
  *   may change on a per-website basis.
  * * Adds a configs table that stores configuration data for your system that may
  *   change dynamically, or on a per-website or per-environment basis.
+ * * Contains a bootstrapper that loads the database stored configuration into your
+ *   website configuration, merging it with that loaded from the normal Laravel config
+ *   files.  So you can access stored config like normal Laravel config, e.g.
+ *
+ * <code>
+ * // Access all configuration variables including Laravel + database stored configuration
+ * $config = config()->all();
+ *
+ * // Fetch a config variable by path
+ * $my_fruit = config('config.fruit');
+ * </code>
+ *
+ * * Database backed configuration is cached for up to 60 minutes to reduce the total amount
+ *   of hits on your database.
  *
  * @see  Illuminate\Support\ServiceProvider
  * @link http://laravel.com/docs/5.1/providers
