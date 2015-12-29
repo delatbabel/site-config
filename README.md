@@ -145,6 +145,16 @@ This provides a distinction between the business logic (deciding on what is to b
 for it to be done) from the database model (loading or saving the data without making logic
 decisions).
 
+## Models
+
+The model classes follow the standard Laravel paradigms but I have added a few extra functions
+to pull configuration data as required.
+
+Thanks to the folks on StackOverflow DBA group who helped sort out the issues that I was having
+with the query in fetchSettings, and also to hailwood whose logic I pulled for the Models\Config::set()
+function.  As mentioned above there should be some further logic to assist in saving the config
+data, as well as some test cases to be developed.
+
 # Credits
 
 Both of these packages were developed for Laravel 4 but provided some ideas:
