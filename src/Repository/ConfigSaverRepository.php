@@ -11,7 +11,46 @@ use Delatbabel\SiteConfig\Models\Config as ConfigModel;
  * Class ConfigSaverRepository
  *
  * This contains all of the functionality to save configuration
- * values to the database..
+ * values to the database.
+ *
+ * ### Examples
+ *
+ * Save a single default parameter with group.key
+ *
+ * <code>
+ * $saver = new ConfigSaverRepository();
+ * $saver->set('config.bird', 'eagle-changed-changed');
+ * </code>
+ *
+ * If you omit the group, then "config" is assumed as the default.
+ *
+ * <code>
+ * $saver = new ConfigSaverRepository();
+ * $saver->set('bird', 'eagle-changed-changed');
+ * </code>
+ *
+ * Saving an array of configuration values:
+ *
+ * <code>
+ * $saver = new ConfigSaverRepository();
+ * $saver->set('config.plant', [
+ *     'vegetable' => 'potato',
+ *     'tree'      => 'oak',
+ *     'flower'    => 'rose',
+ * ]);
+ * </code>
+ *
+ * Saving an array of configuration values and then updating part of the array:
+ *
+ * <code>
+ * $saver = new ConfigSaverRepository();
+ * $saver->set('config.plant', [
+ *     'vegetable' => 'potato',
+ *     'tree'      => 'oak',
+ *     'flower'    => 'rose',
+ * ]);
+ * $saver->set('config.plant.vegetable', 'turnip');
+ * </code>
  */
 class ConfigSaverRepository
 {
@@ -20,22 +59,6 @@ class ConfigSaverRepository
 
     /**
      * Set a given configuration value and store it in the database.
-     *
-     * ### Examples
-     *
-     * Save a single default parameter with group.key
-     *
-     * <code>
-     * $saver = new ConfigSaverRepository();
-     * $saver->set('config.bird', 'eagle-changed-changed');
-     * </code>
-     *
-     * If you omit the group, then "config" is assumed as the default.
-     *
-     * <code>
-     * $saver = new ConfigSaverRepository();
-     * $saver->set('bird', 'eagle-changed-changed');
-     * </code>
      *
      * @param  string      $key
      * @param  mixed       $value

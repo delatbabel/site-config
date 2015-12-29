@@ -228,13 +228,17 @@ class Config extends Model
                 $type  = 'array';
             }
 
+            if (is_array($value)) {
+                $value = serialize($value);
+            }
+
             static::create(
                 array(
-                     'environment' => $environment,
-                     'group'       => $group,
-                     'key'         => $key,
-                     'value'       => $value,
-                     'type'        => $type,
+                    'environment' => $environment,
+                    'group'       => $group,
+                    'key'         => $key,
+                    'value'       => $value,
+                    'type'        => $type,
                 ));
         } else {
 
@@ -251,6 +255,10 @@ class Config extends Model
                 $value = serialize($array);
 
                 $type = 'array';
+            }
+
+            if (is_array($value)) {
+                $value = serialize($value);
             }
 
             $model->value = $value;
