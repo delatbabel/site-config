@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Facade;
  *
  * Facade class for accessing the site config saver.
  *
+ * Note that this facade only accesses the methods for CRUD (loading/saving)
+ * the raw config data.  Otherwise this package just uses the standard Laravel
+ * Config facade to access the configuration data, because the bootstrapper
+ * for the package loads the database site config into the Laravel config.
+ *
  * ### Example
  *
  * <code>
