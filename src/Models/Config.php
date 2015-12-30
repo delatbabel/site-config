@@ -4,6 +4,7 @@
  */
 namespace Delatbabel\SiteConfig\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -46,6 +47,10 @@ class Config extends Model
      * these limited values take precedence over any values where website_id
      * or environment are NULL.
      *
+     * Otherwise the values that are stored where website_id and/or environment
+     * act as "wildcards", so that they will match any searched website_id
+     * or environment if there is no closer match.
+     *
      * As an example here are some table entries:
      *
      * <code>
@@ -70,7 +75,7 @@ class Config extends Model
      * prod    test   fruit  5, fruit, orange // host=test takes precedence
      * </code>
      *
-     * The data that this funciton returns is actually a set of key => value
+     * The data that this function returns is actually a set of key => value
      * pairs for the configuration found within group $group.
      *
      * To get the full configuration you need to call this function for each
@@ -118,11 +123,102 @@ class Config extends Model
             'Config SQL query: ' . $model->toSql());
         */
 
-        // The above query will produce a query where the most relevant results
-        // happen before the least relevant results.  So now we have to create a
-        // key->value list picking only the most relevant results.
+        /** @var Collection $collection */
+        $collection = $model->get();
+        return static::normaliseCollection($collection);
+    }
+
+    /**
+     * Return the exact configuration data for a specific environment & group.
+     *
+     * This function returns the exact configuration data for a specific
+     * environment and group, ignoring any wildcard (NULL) values.
+     *
+     * As an example here are some table entries:
+     *
+     * <code>
+     * id     host    env    key    value
+     * 1      NULL    NULL   fruit  apple
+     * 2      NULL    prod   fruit  banana
+     * 3      www     prod   fruit  mango
+     * 4      NULL    test   fruit  peach
+     * 5      test    NULL   fruit  orange
+     * </code>
+     *
+     * Given that sample data, this function should return the following
+     * data for these searches:
+     *
+     * <code>
+     * env     host   key    data returned
+     * NULL    NULL   fruit  1, fruit, apple
+     * prod    NULL   fruit  2, fruit, banana
+     * NULL    www    fruit  null
+     * junk    junk   fruit  null
+     * junk    www    fruit  null
+     * prod    test   fruit  null
+     * </code>
+     *
+     * The data that this function returns is actually a set of key => value
+     * pairs for the configuration found within group $group.
+     *
+     * To get the full configuration you need to call this function for each
+     * group returned by fetchAllGroups().
+     *
+     * @param string $environment
+     * @param integer $website_id
+     * @param string $group
+     * @return array
+     */
+    public static function fetchExactSettings($environment = null, $website_id = null, $group = 'config')
+    {
+        $model = static::where('group', '=', $group);
+
+        // Environment can be null, or must match or use the null wildcard.
+        $model->where(function ($query) use ($environment) {
+            if (empty($environment)) {
+                $query->whereNull('environment');
+            } else {
+                $query->where('environment', '=', $environment);
+            }
+        });
+
+        // Website can be null, or must match or use the null wildcard.
+        $model->where(function ($query) use ($website_id) {
+            if (empty($website_id)) {
+                $query->whereNull('website_id');
+            } else {
+                $query->where('website_id', '=', $website_id);
+            }
+        });
+
+        /*
+        Log::debug(__CLASS__ . ':' . __TRAIT__ . ':' . __FILE__ . ':' . __LINE__ . ':' . __FUNCTION__ . ':' .
+            'Config SQL query: ' . $model->toSql());
+        */
+
+        /** @var Collection $collection */
+        $collection = $model->get();
+        return static::normaliseCollection($collection);
+    }
+
+    /**
+     * Normalise a Collection (a result from model->get())
+     *
+     * Normalise a Collection (a result from model->get()) to a key
+     * => value array, picking only the first result in the array. The
+     * above queries will produce a collection where the most relevant
+     * results happen before the least relevant results, so we just pick
+     * the first key=>value pair found in the collection.
+     *
+     * @param Collection $collection
+     * @return array
+     */
+    protected static function normaliseCollection(Collection $collection)
+    {
         $result = array();
-        foreach ($model->get() as $item) {
+
+        /** @var Config $item */
+        foreach ($collection as $item) {
             if (empty($result[$item->key])) {
                 switch (strtolower($item->type)) {
                     case 'string':

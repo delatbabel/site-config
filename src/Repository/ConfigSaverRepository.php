@@ -58,13 +58,47 @@ class ConfigSaverRepository
     protected $configLoader;
 
     /**
+     * Get the editable configuration from the database.
+     *
+     * This function gets a set of key=>value pairs for every editable
+     * configuration item that is stored in the database.
+     *
+     * Keys are return in the format group.key
+     *
+     * @param  null|string $environment
+     * @param  null|integer $website_id
+     * @return array
+     */
+    public function get($environment = null, $website_id = null)
+    {
+        $groups = ConfigModel::fetchAllGroups();
+        $result = array();
+
+        foreach ($groups as $group) {
+            $groupConfig = ConfigModel::fetchExactSettings($environment, $website_id, $group);
+            foreach ($groupConfig as $key => $value) {
+                $result[$group . '.' . $key] = value;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Set a given configuration value and store it in the database.
+     *
+     * This stores a configuration value with a key => value pair into
+     * the database against a specific environment and website_id (which
+     * default to NULL).
+     *
+     * The key is represented as group.key for simple key=>value pairs within
+     * group "group" or group.key1.key2.key3 ... for nested keys, stored as
+     * arrays within the global configuration.
      *
      * @param  string      $key
      * @param  mixed       $value
      * @param  null|string $environment
      * @param  null|integer $website_id
-     *
      * @return void
      */
     public function set($key, $value, $environment = null, $website_id = null)

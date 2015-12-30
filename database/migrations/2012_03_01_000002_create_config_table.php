@@ -32,13 +32,13 @@ class CreateConfigTable extends Migration
             $table->increments('id');
             $table->integer('website_id')->unsigned()->nullable();
             $table->string('environment')->nullable();
-            $table->string('group')->default('config');
+            $table->string('group')->default('config')->index();
             $table->string('key');
             $table->longText('value')->nullable();
             $table->string('type');
             $table->timestamps();
 
-            $table->unique(array('website_id', 'environment', 'key'));
+            $table->unique(array('website_id', 'environment', 'group', 'key'));
 
             $table->foreign('website_id')
                 ->references('id')->on('websites')
