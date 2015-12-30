@@ -7,6 +7,7 @@ namespace Delatbabel\SiteConfig;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\App;
 
 /**
  * SiteConfig Service Provider
@@ -73,6 +74,9 @@ class SiteConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        App::bind('siteconfig', function()
+        {
+            return new \Delatbabel\SiteConfig\Repository\ConfigSaverRepository();
+        });
     }
 }

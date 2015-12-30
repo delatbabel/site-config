@@ -51,6 +51,14 @@ After composer update completes, add this line to your config/app.php file in th
     Delatbabel\SiteConfig\SiteConfigServiceProvider::class,
 ```
 
+### Add the Facade to the Aliases
+
+In your config/app.php add this line to the aliases array:
+
+```
+    'SiteConfigSaver'   => Delatbabel\SiteConfig\Facades\SiteConfigSaver::class,
+```
+
 ### Boostrap the Config Loader
 
 Modify each of app/Console/Kernel.php and app/Http/Kernel.php to include the following bootstrappers function:
