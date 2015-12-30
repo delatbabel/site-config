@@ -77,7 +77,7 @@ class ConfigSaverRepository
         foreach ($groups as $group) {
             $groupConfig = ConfigModel::fetchExactSettings($environment, $website_id, $group);
             foreach ($groupConfig as $key => $value) {
-                $result[$group . '.' . $key] = value;
+                $result[$group . '.' . $key] = $value;
             }
         }
 
