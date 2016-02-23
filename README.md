@@ -29,7 +29,13 @@ codeception tests embedded in a sample application, yet to be published.
 
 ## Installation
 
-Add these lines to your composer.json file:
+Add the package using composer from the command line:
+
+```
+    composer require delatbabel\site-config
+```
+
+Alternatively, pull the package in manually by adding these lines to your composer.json file:
 
 ```
     "require": {

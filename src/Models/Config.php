@@ -258,8 +258,12 @@ class Config extends Model
         $model = new self;
 
         $result = array();
-        foreach ($model->select('group')->distinct()->get() as $row) {
-            $result[] = $row->group;
+        try {
+            foreach ($model->select('group')->distinct()->get() as $row) {
+                $result[] = $row->group;
+            }
+        } catch (\Exception $e) {
+            // Do nothing.
         }
 
         return $result;

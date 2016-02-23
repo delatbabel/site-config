@@ -84,17 +84,22 @@ class Website extends Model
         if (empty($current_data)) {
 
             // Have to do this using a raw query because Laravel doesn't INSTR.
-            /** @var Website $result */
-            $result = static::whereRaw("INSTR('" . $BASE_URL . "', `http_host`) > 0")
-                ->orderBy(DB::raw('LENGTH(`http_host`)'), 'desc')
-                ->first();
-            if (empty($result)) {
-                $current_data = null;
-            } else {
-                $current_data = $result->toArray();
-            }
+            try {
+                /** @var Website $result */
+                $result = static::whereRaw("INSTR('" . $BASE_URL . "', `http_host`) > 0")
+                    ->orderBy(DB::raw('LENGTH(`http_host`)'), 'desc')
+                    ->first();
+                if (empty($result)) {
+                    $current_data = null;
+                } else {
+                    $current_data = $result->toArray();
+                }
 
-            Cache::put($cache_key, $current_data, 60);
+                Cache::put($cache_key, $current_data, 60);
+
+            } catch (\Exception $e) {
+                $current_data = null;
+            }
         }
 
         return $current_data;
