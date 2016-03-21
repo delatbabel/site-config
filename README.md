@@ -96,11 +96,15 @@ php artisan vendor:publish --tag=migrations --force
 php artisan migrate
 ```
 
+There are some sample seedeers in database/seeds.  You can copy these seeders in and use them
+as boilerplate for your own seeders in your own applications.  They show how to populate the
+websites table and the configs table for some examples of global config as well as per-website
+and per-environment config.
+
 # TODO
 
 * More testing, bug fixing.  I have tried to create a test suite using orchestra/testbench
   but it does not appear to work.
-* Better methods and a facade for saving the configuration to the database.
 * Maybe a set of admin controllers/methods for updating the configuration.
 
 # Architecture
