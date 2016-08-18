@@ -35,7 +35,7 @@ class Website extends Model
      */
     public function configs()
     {
-        return $this->hasMany('Delatbabel\SiteConfig\Models\Config');
+        return $this->hasMany('\Delatbabel\SiteConfig\Models\Config');
     }
 
     /**
