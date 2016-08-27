@@ -6,9 +6,9 @@
  */
 namespace Delatbabel\SiteConfig\Bootstrap;
 
-use Illuminate\Contracts\Foundation\Application;
 use Delatbabel\SiteConfig\Repository\ConfigLoaderRepository;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Load Configuration Class

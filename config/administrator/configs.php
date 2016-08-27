@@ -6,7 +6,7 @@
  * @link https://github.com/ddpro/admin/blob/master/docs/model-configuration.md
  */
 
-return array(
+return [
 
     'title' => 'Configs',
 
@@ -17,62 +17,62 @@ return array(
     /**
      * The display columns
      */
-    'columns' => array(
+    'columns' => [
         'id',
-        'environment' => array(
+        'environment' => [
             'title' => 'Environment',
-        ),
-        'group' => array(
+        ],
+        'group' => [
             'title' => 'Group',
-        ),
-        'key' => array(
+        ],
+        'key' => [
             'title' => 'Key',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The filter set
      */
-    'filters' => array(
+    'filters' => [
         'id',
-        'environment' => array(
+        'environment' => [
             'title' => 'Environment',
-        ),
-        'group' => array(
+        ],
+        'group' => [
             'title' => 'Group',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The editable fields
      */
-    'edit_fields' => array(
-        'environment' => array(
+    'edit_fields' => [
+        'environment' => [
             'title' => 'Environment',
-            'type' => 'text',
-        ),
-        'website' => array(
-            'title' => 'Website',
-            'type' => 'relationship',
-            'name_field' => 'name',
+            'type'  => 'text',
+        ],
+        'website' => [
+            'title'              => 'Website',
+            'type'               => 'relationship',
+            'name_field'         => 'name',
             'options_sort_field' => 'name',
-        ),
-        'group' => array(
+        ],
+        'group' => [
             'title' => 'Group',
-            'type' => 'text',
-        ),
-        'key' => array(
+            'type'  => 'text',
+        ],
+        'key' => [
             'title' => 'Key',
-            'type' => 'text',
-        ),
-        'value' => array(
+            'type'  => 'text',
+        ],
+        'value' => [
             'title' => 'Value',
-            'type' => 'textarea',
-        ),
-        'type' => array(
+            'type'  => 'textarea',
+        ],
+        'type' => [
             'title' => 'Type',
-            'type' => 'text',
-        ),
-    ),
+            'type'  => 'text',
+        ],
+    ],
 
-);
+];

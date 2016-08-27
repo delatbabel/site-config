@@ -215,7 +215,7 @@ class Config extends Model
      */
     protected static function normaliseCollection(Collection $collection)
     {
-        $result = array();
+        $result = [];
 
         /** @var Config $item */
         foreach ($collection as $item) {
@@ -257,7 +257,7 @@ class Config extends Model
     {
         $model = new self;
 
-        $result = array();
+        $result = [];
         try {
             foreach ($model->select('group')->distinct()->get() as $row) {
                 $result[] = $row->group;
@@ -280,7 +280,7 @@ class Config extends Model
      * @param string $type   "array"|"string"|"integer"
      * @return Config
      */
-    public static function set($key, $value, $group='config', $environment = null, $website_id = null, $type = 'string')
+    public static function set($key, $value, $group = 'config', $environment = null, $website_id = null, $type = 'string')
     {
         //Lets check if we are doing special array handling
         $arrayHandling = false;
@@ -318,7 +318,7 @@ class Config extends Model
             //Check if we need to do special array handling
             if ($arrayHandling) {
                 // we are setting a subset of an array
-                $array = array();
+                $array = [];
                 self::buildArrayPath($keyExploded, $value, $array);
                 $value = serialize($array);
                 $type  = 'array';
@@ -329,19 +329,19 @@ class Config extends Model
             }
 
             static::create(
-                array(
+                [
                     'environment' => $environment,
                     'group'       => $group,
                     'key'         => $key,
                     'value'       => $value,
                     'type'        => $type,
-                ));
+                ]);
         } else {
 
             //Check if we need to do special array handling
             if ($arrayHandling) {
                 // we are setting a subset of an array
-                $array = array();
+                $array = [];
                 self::buildArrayPath($keyExploded, $value, $array);
 
                 //do we need to merge?
@@ -386,7 +386,7 @@ class Config extends Model
     {
         $key = array_shift($map);
         if (count($map) !== 0) {
-            $array[$key] = array();
+            $array[$key] = [];
             self::buildArrayPath($map, $value, $array[$key]);
         } else {
             $array[$key] = $value;

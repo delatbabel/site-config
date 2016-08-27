@@ -5,9 +5,9 @@
 namespace Delatbabel\SiteConfig\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Website
@@ -70,7 +70,7 @@ class Website extends Model
     public static function currentWebsiteData()
     {
         static $current_data;
-        $BASE_URL = static::currentServerName();
+        $BASE_URL  = static::currentServerName();
         $cache_key = 'website-data.' . $BASE_URL;
 
         // Get the current ID from the cache if it is present.
@@ -96,7 +96,6 @@ class Website extends Model
                 }
 
                 Cache::put($cache_key, $current_data, 60);
-
             } catch (\Exception $e) {
                 $current_data = null;
             }

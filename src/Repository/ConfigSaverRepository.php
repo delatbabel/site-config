@@ -72,7 +72,7 @@ class ConfigSaverRepository
     public function get($environment = null, $website_id = null)
     {
         $groups = ConfigModel::fetchAllGroups();
-        $result = array();
+        $result = [];
 
         foreach ($groups as $group) {
             $groupConfig = ConfigModel::fetchExactSettings($environment, $website_id, $group);
