@@ -7,8 +7,8 @@ namespace Delatbabel\SiteConfig\Repository;
 
 use Delatbabel\SiteConfig\Models\Config as ConfigModel;
 use Delatbabel\SiteConfig\Models\Website as WebsiteModel;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class ConfigLoaderRepository
@@ -116,7 +116,7 @@ class ConfigLoaderRepository
     {
         // Fetch the current application environment.
         $this->environment = app()->environment();
-        $this->website_id = null;
+        $this->website_id  = null;
 
         // Fetch the current web site data and check to see if it has an
         // alternative environment.
@@ -154,7 +154,7 @@ class ConfigLoaderRepository
             return $cache;
         }
 
-        $config = array();
+        $config = [];
 
         // Fetch all groups, and fetch the config for each group based on the
         // environment and website ID of the current site.
@@ -180,7 +180,7 @@ class ConfigLoaderRepository
      * @param RepositoryContract $config
      * @return void
      */
-    function setRunningConfiguration(RepositoryContract $config)
+    public function setRunningConfiguration(RepositoryContract $config)
     {
         // Load the configuration into the current running config.
         foreach ($this->loadConfiguration() as $group => $groupConfig) {

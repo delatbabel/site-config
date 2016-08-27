@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use Delatbabel\SiteConfig\Models\Website;
 use Delatbabel\SiteConfig\Models\Config as ConfigModel;
+use Delatbabel\SiteConfig\Models\Website;
+use Illuminate\Database\Seeder;
 
 class TestConfigSeeder extends Seeder
 {

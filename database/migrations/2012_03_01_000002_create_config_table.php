@@ -38,7 +38,7 @@ class CreateConfigTable extends Migration
             $table->string('type');
             $table->timestamps();
 
-            $table->unique(array('website_id', 'environment', 'group', 'key'));
+            $table->unique(['website_id', 'environment', 'group', 'key']);
 
             $table->foreign('website_id')
                 ->references('id')->on('websites')

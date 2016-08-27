@@ -6,7 +6,7 @@
  * @link https://github.com/ddpro/admin/blob/master/docs/model-configuration.md
  */
 
-return array(
+return [
 
     'title' => 'Websites',
 
@@ -17,51 +17,51 @@ return array(
     /**
      * The display columns
      */
-    'columns' => array(
+    'columns' => [
         'id',
-        'name' => array(
+        'name' => [
             'title' => 'Name',
-        ),
-        'http_host' => array(
+        ],
+        'http_host' => [
             'title' => 'HTTP Hostname',
-        ),
-        'environment' => array(
+        ],
+        'environment' => [
             'title' => 'Environment',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The filter set
      */
-    'filters' => array(
+    'filters' => [
         'id',
-        'name' => array(
+        'name' => [
             'title' => 'Name',
-        ),
-        'http_host' => array(
+        ],
+        'http_host' => [
             'title' => 'HTTP Hostname',
-        ),
-        'environment' => array(
+        ],
+        'environment' => [
             'title' => 'Environment',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The editable fields
      */
-    'edit_fields' => array(
-        'name' => array(
+    'edit_fields' => [
+        'name' => [
             'title' => 'Name',
-            'type' => 'text',
-        ),
-        'http_host' => array(
+            'type'  => 'text',
+        ],
+        'http_host' => [
             'title' => 'HTTP Hostname',
-            'type' => 'text',
-        ),
-        'environment' => array(
+            'type'  => 'text',
+        ],
+        'environment' => [
             'title' => 'Environment',
-            'type' => 'text',
-        ),
-    ),
+            'type'  => 'text',
+        ],
+    ],
 
-);
+];
