@@ -328,39 +328,40 @@ class Config extends Model
                 $value = serialize($value);
             }
 
-            static::create(
+            return static::create(
                 [
+                    'website_id'  => $website_id,
                     'environment' => $environment,
                     'group'       => $group,
                     'key'         => $key,
                     'value'       => $value,
                     'type'        => $type,
                 ]);
-        } else {
-
-            //Check if we need to do special array handling
-            if ($arrayHandling) {
-                // we are setting a subset of an array
-                $array = [];
-                self::buildArrayPath($keyExploded, $value, $array);
-
-                //do we need to merge?
-                if ($model->type == 'array') {
-                    $array = array_replace_recursive(unserialize($model->value), $array);
-                }
-                $value = serialize($array);
-
-                $type = 'array';
-            }
-
-            if (is_array($value)) {
-                $value = serialize($value);
-            }
-
-            $model->value = $value;
-            $model->type  = $type;
-            $model->save();
         }
+
+        //Check if we need to do special array handling
+        if ($arrayHandling) {
+            // we are setting a subset of an array
+            $array = [];
+            self::buildArrayPath($keyExploded, $value, $array);
+
+            //do we need to merge?
+            if ($model->type == 'array') {
+                $array = array_replace_recursive(unserialize($model->value), $array);
+            }
+            $value = serialize($array);
+
+            $type = 'array';
+        }
+
+        if (is_array($value)) {
+            $value = serialize($value);
+        }
+
+        $model->value = $value;
+        $model->type  = $type;
+        $model->save();
+        return $model;
     }
 
     /**
