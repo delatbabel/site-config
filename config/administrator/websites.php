@@ -12,17 +12,19 @@ return [
 
     'single' => 'website',
 
-    'model' => '\Delatbabel\SiteConfig\Models\Website',
+    'model'       => '\Delatbabel\SiteConfig\Models\Website',
 
     /**
      * The display columns
      */
-    'columns' => [
-        'id',
-        'name' => [
+    'columns'     => [
+        'id'          => [
+            'title' => 'ID',
+        ],
+        'name'        => [
             'title' => 'Name',
         ],
-        'http_host' => [
+        'http_host'   => [
             'title' => 'HTTP Hostname',
         ],
         'environment' => [
@@ -33,12 +35,14 @@ return [
     /**
      * The filter set
      */
-    'filters' => [
-        'id',
-        'name' => [
+    'filters'     => [
+        'id'          => [
+            'title' => 'ID',
+        ],
+        'name'        => [
             'title' => 'Name',
         ],
-        'http_host' => [
+        'http_host'   => [
             'title' => 'HTTP Hostname',
         ],
         'environment' => [
@@ -50,11 +54,11 @@ return [
      * The editable fields
      */
     'edit_fields' => [
-        'name' => [
+        'name'        => [
             'title' => 'Name',
             'type'  => 'text',
         ],
-        'http_host' => [
+        'http_host'   => [
             'title' => 'HTTP Hostname',
             'type'  => 'text',
         ],

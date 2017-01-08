@@ -12,20 +12,22 @@ return [
 
     'single' => 'config',
 
-    'model' => '\Delatbabel\SiteConfig\Models\Config',
+    'model'       => '\Delatbabel\SiteConfig\Models\Config',
 
     /**
      * The display columns
      */
-    'columns' => [
-        'id',
+    'columns'     => [
+        'id'   => [
+            'title' => 'ID',
+        ],
         'environment' => [
             'title' => 'Environment',
         ],
-        'group' => [
+        'group'       => [
             'title' => 'Group',
         ],
-        'key' => [
+        'key'         => [
             'title' => 'Key',
         ],
     ],
@@ -33,12 +35,12 @@ return [
     /**
      * The filter set
      */
-    'filters' => [
+    'filters'     => [
         'id',
         'environment' => [
             'title' => 'Environment',
         ],
-        'group' => [
+        'group'       => [
             'title' => 'Group',
         ],
     ],
@@ -51,25 +53,25 @@ return [
             'title' => 'Environment',
             'type'  => 'text',
         ],
-        'website' => [
+        'website'     => [
             'title'              => 'Website',
             'type'               => 'relationship',
             'name_field'         => 'name',
             'options_sort_field' => 'name',
         ],
-        'group' => [
+        'group'       => [
             'title' => 'Group',
             'type'  => 'text',
         ],
-        'key' => [
+        'key'         => [
             'title' => 'Key',
             'type'  => 'text',
         ],
-        'value' => [
+        'value'       => [
             'title' => 'Value',
             'type'  => 'textarea',
         ],
-        'type' => [
+        'type'        => [
             'title' => 'Type',
             'type'  => 'text',
         ],
