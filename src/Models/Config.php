@@ -35,6 +35,17 @@ class Config extends Model
         return $this->belongsTo('\Delatbabel\SiteConfig\Models\Website');
     }
 
+    public function getValueAttribute($value) {
+        if (@unserialize($value)) {
+            $value = unserialize($value);
+        }
+        return $value;
+    }
+
+    public function setValueAttribute($value) {
+        return serialize(json_decode($value, $array = TRUE));
+    }
+
     /**
      * Return the configuration data for a specific environment & group.
      *

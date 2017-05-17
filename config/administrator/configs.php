@@ -69,7 +69,7 @@ return [
         ],
         'value'       => [
             'title' => 'Value',
-            'type'  => 'textarea',
+            'type'  => 'json',
         ],
         'type'        => [
             'title' => 'Type',
