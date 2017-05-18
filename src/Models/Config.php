@@ -245,7 +245,11 @@ class Config extends Model
                         $result[$item->key] = (boolean)$item->value;
                         break;
                     case 'array':
-                        $result[$item->key] = unserialize($item->value);
+                        if (is_array($item->value)) {
+                            $result[$item->key] = $item->value;
+                        } elseif (is_string($item->value) {
+                            $result[$item->key] = unserialize($item->value);
+                        }
                         break;
                     case 'null':
                         $result[$item->key] = null;
