@@ -361,7 +361,7 @@ class Config extends Model
             self::buildArrayPath($keyExploded, $value, $array);
 
             //do we need to merge?
-            if ($model->type == 'array') {
+            if ($model->type == 'array' && ! empty($model->value)) {
                 $array = array_replace_recursive(unserialize($model->value), $array);
             }
             $value = serialize($array);
