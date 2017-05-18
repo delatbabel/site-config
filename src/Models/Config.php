@@ -247,7 +247,7 @@ class Config extends Model
                     case 'array':
                         if (is_array($item->value)) {
                             $result[$item->key] = $item->value;
-                        } elseif (is_string($item->value) {
+                        } elseif (is_string($item->value)) {
                             $result[$item->key] = unserialize($item->value);
                         }
                         break;
