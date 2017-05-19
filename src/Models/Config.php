@@ -36,14 +36,17 @@ class Config extends Model
     }
 
     public function getValueAttribute($value) {
-        if (@unserialize($value)) {
+        if ($this->type == 'array' && @unserialize($value)) {
             $value = unserialize($value);
         }
         return $value;
     }
 
     public function setValueAttribute($value) {
-        return serialize(json_decode($value, $array = TRUE));
+        if ($this->type == 'array' && is_string($value)) {
+            $value = serialize(json_decode($value, $array = TRUE));
+        }
+        $this->attributes['value'] = $value;
     }
 
     /**
