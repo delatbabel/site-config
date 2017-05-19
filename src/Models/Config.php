@@ -61,7 +61,7 @@ class Config extends Model
             return true;
         } else {
             return false;
-}
+        }
     }
 
     /**
@@ -344,7 +344,7 @@ class Config extends Model
      */
     public static function set($key, $value, $group = 'config', $environment = null, $website_id = null, $type = 'string')
     {
-        //Lets check if we are doing special array handling
+        // Let's check if we are doing special array handling
         $arrayHandling = false;
         $keyExploded   = explode('.', $key);
         if (count($keyExploded) > 1) {
@@ -383,6 +383,7 @@ class Config extends Model
                 // we are setting a subset of an array
                 $array = [];
                 self::buildArrayPath($keyExploded, $value, $array);
+                $value = $array;
                 $type  = 'array';
             }
 
