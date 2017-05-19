@@ -35,16 +35,60 @@ class Config extends Model
         return $this->belongsTo('\Delatbabel\SiteConfig\Models\Website');
     }
 
+    /**
+     * Check to see if a string is JSON.
+     *
+     * @param $string
+     * @return bool
+     */
+    protected function isJson($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
+    /**
+     * Check to see if a string is a serialized array or object.
+     *
+     * @param $string
+     * @return bool
+     */
+    protected function isSerialized($string) {
+        $data = @unserialize($string);
+        if ($data !== false) {
+            return true;
+        } else {
+            return false;
+}
+    }
+
+    /**
+     * Accessor function
+     *
+     * @return mixed, but should always return an array for an array type field.
+     */
     public function getValueAttribute($value) {
-        if ($this->type == 'array' && @unserialize($value)) {
-            $value = unserialize($value);
+        if ($this->isJson($value)) {
+            return json_decode($value);
+        }
+        if ($this->isSerialized($value)) {
+            return unserialize($value);
         }
         return $value;
     }
 
+    /**
+     * Mutator function
+     *
+     * Always stores the serialized version of an array or JSON string.
+     *
+     * @param $value
+     * @return void
+     */
     public function setValueAttribute($value) {
-        if ($this->type == 'array' && is_string($value)) {
-            $value = serialize(json_decode($value, $array = TRUE));
+        if ($this->isJson($value)) {
+            $value = serialize(json_decode($value, true));
+        } elseif (is_array($value)) {
+            $value = serialize($value);
         }
         $this->attributes['value'] = $value;
     }
@@ -248,11 +292,8 @@ class Config extends Model
                         $result[$item->key] = (boolean)$item->value;
                         break;
                     case 'array':
-                        if (is_array($item->value)) {
-                            $result[$item->key] = $item->value;
-                        } elseif (is_string($item->value)) {
-                            $result[$item->key] = unserialize($item->value);
-                        }
+                        // The accessor function on $item->value will always return an array
+                        $result[$item->key] = $item->value;
                         break;
                     case 'null':
                         $result[$item->key] = null;
@@ -306,8 +347,9 @@ class Config extends Model
         if (count($keyExploded) > 1) {
             $arrayHandling = true;
             $key           = array_shift($keyExploded);
-            if ($type == 'array' && ! is_array($value)) {
-                $value = unserialize($value);
+            if ($type == 'array') {
+                // Use the accessor to ensure we always get an array.
+                $value = static::getValueAttribute($value);
             }
         }
 
@@ -338,12 +380,7 @@ class Config extends Model
                 // we are setting a subset of an array
                 $array = [];
                 self::buildArrayPath($keyExploded, $value, $array);
-                $value = serialize($array);
                 $type  = 'array';
-            }
-
-            if (is_array($value)) {
-                $value = serialize($value);
             }
 
             return static::create(
@@ -365,15 +402,11 @@ class Config extends Model
 
             //do we need to merge?
             if ($model->type == 'array' && ! empty($model->value)) {
-                $array = array_replace_recursive(unserialize($model->value), $array);
+                $array = array_replace_recursive($model->value, $array);
             }
-            $value = serialize($array);
+            $value = $array;
 
             $type = 'array';
-        }
-
-        if (is_array($value)) {
-            $value = serialize($value);
         }
 
         $model->value = $value;
