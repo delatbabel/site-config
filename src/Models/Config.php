@@ -42,7 +42,7 @@ class Config extends Model
      * @return bool
      */
     protected function isJson($string) {
-		// json_decode a numeric string doesn't throw an error, so we have to check it manually
+        // json_decode a numeric string doesn't throw an error, so we have to check it manually
         if (! is_string($string) || is_numeric($string)) {
             return false;
         }
