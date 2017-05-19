@@ -70,6 +70,7 @@ return [
         'value'       => [
             'title' => 'Value',
             'type'  => 'json',
+            'height' => '400',
         ],
         'type'        => [
             'title' => 'Type',
