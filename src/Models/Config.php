@@ -42,7 +42,10 @@ class Config extends Model
      * @return bool
      */
     protected function isJson($string) {
-        json_decode($string);
+        if (! is_string($string)) {
+            return false;
+        }
+        $result = @json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
 
