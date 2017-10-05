@@ -98,6 +98,21 @@ class Config extends Model
     }
 
     /**
+     * Mutator function
+     *
+     * Make sure that an empty environment gets saved as NULL
+     *
+     * @param $value
+     * @return void
+     */
+    public function setEnvironmentAttribute($value) {
+        if (empty($value)) {
+            $value = null;
+        }
+        $this->attributes['environment'] = $value;
+    }
+
+    /**
      * Return the configuration data for a specific environment & group.
      *
      * What this function tries to achieve is to return the configuration
